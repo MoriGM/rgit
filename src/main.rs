@@ -1,12 +1,33 @@
 pub mod repo;
 
-fn main() {
-    let repo = match repo::GitRepo::new("/home/max/Code/rust/book/hello_world/") {
-        Ok(repo) => repo,
-        Err(err) => panic!("{}", err)
-    };
+#[macro_use] extern crate rocket;
+
+use rocket::http::{Status, ContentType};
+
+use crate::repo::GitRepo;
+
+#[get("/")]
+fn index() -> &'static str {
+    "Hello, world!"
+}
+
+#[get("/<repo>")]
+fn web_repo(repo: &str) -> (Status, (ContentType, String)) {
+    let repo = GitRepo::new("/home/max/Code/rust/book/hello_world/");
     
-    repo.logs().for_each(|rev| {
-        println!("{}", rev);
+    let mut body = String::from("");
+    
+    repo.unwrap().logs().for_each(|text| {
+        body.push_str(text.as_str());
+        body.push_str("<br/>");
     });
+    
+    (Status::Ok, (ContentType::HTML, body))
+}
+
+#[launch]
+fn rocket() -> _ {
+    rocket::build()
+        .mount("/", routes![index])
+        .mount("/repo", routes![web_repo])
 }
