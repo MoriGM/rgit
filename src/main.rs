@@ -3,8 +3,17 @@ pub mod repo;
 #[macro_use] extern crate rocket;
 
 use rocket::http::{Status, ContentType};
+use rocket::Config;
+use clap::Parser;
 
 use crate::repo::GitRepo;
+
+#[derive(Parser)]
+struct Cli {
+    #[clap(short, default_value = "8000")]
+    port: String
+}
+
 
 #[get("/")]
 fn index() -> &'static str {
@@ -27,6 +36,11 @@ fn web_repo(repo: &str) -> (Status, (ContentType, String)) {
 
 #[launch]
 fn rocket() -> _ {
+    let cli = Cli::parse();
+    
+    let mut config = Config::default();
+    config.port = cli.port.parse::<u16>().unwrap();
+    
     rocket::build()
         .mount("/", routes![index])
         .mount("/repo", routes![web_repo])
