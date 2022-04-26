@@ -1,4 +1,5 @@
-pub mod repo;
+mod repo;
+mod config;
 
 #[macro_use] extern crate rocket;
 
