@@ -16,6 +16,18 @@ impl GitRepo {
         
         Ok(GitRepo{repo})
     }
+
+    pub fn refresh(&self) -> Result<GitRepo, String> {
+        let repo = Repository::open(self.repo.path());
+        
+        if repo.is_err() {
+           return Err("Canno't find repo in path".to_string());
+        }
+        
+        let repo = repo.unwrap();
+        
+        Ok(GitRepo{repo})
+    }
     
     pub fn logs(&self) -> std::vec::IntoIter<String> {
         let mut revs = match self.repo.revwalk() {
