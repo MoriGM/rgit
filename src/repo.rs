@@ -7,7 +7,8 @@ pub struct GitRepo {
 
 #[derive(Serialize, Deserialize)]
 pub struct GitCommit {
-    pub oid :String
+    pub oid :String,
+    pub message: String
 }
 
 impl GitRepo {
@@ -46,7 +47,14 @@ impl GitRepo {
         let mut commits = Vec::new();
         
         revs.for_each(|rev| {
-            commits.push(GitCommit{oid: format!("{}", rev.unwrap())});
+            let oid_raw = rev.unwrap();
+            let oid = format!("{}", oid_raw);
+            let commit = self.repo.find_commit(oid_raw);
+            let message = match commit.unwrap().message() {
+                Some(message) => message.to_string(),
+                None => "".to_string()
+            };
+            commits.push(GitCommit{oid, message});
         });
         
         commits
