@@ -1,7 +1,13 @@
 use git2::Repository;
+use serde::{Serialize, Deserialize};
 
 pub struct GitRepo {
     repo: Repository
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct GitCommit {
+    pub oid :String
 }
 
 impl GitRepo {
@@ -29,7 +35,7 @@ impl GitRepo {
         Ok(GitRepo{repo})
     }
     
-    pub fn logs(&self) -> std::vec::IntoIter<String> {
+    pub fn logs(&self) -> std::vec::Vec<GitCommit> {
         let mut revs = match self.repo.revwalk() {
             Ok(rev) => rev,
             Err(e) => panic!("failed to init: {}", e)
@@ -37,12 +43,12 @@ impl GitRepo {
         
         revs.push_head().unwrap();
         
-        let mut log_strings = vec![];
+        let mut commits = Vec::new();
         
         revs.for_each(|rev| {
-            log_strings.push(format!("{}", rev.unwrap()))
+            commits.push(GitCommit{oid: format!("{}", rev.unwrap())});
         });
         
-        log_strings.into_iter()
+        commits
     } 
 }

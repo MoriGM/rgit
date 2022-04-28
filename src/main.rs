@@ -5,6 +5,7 @@ mod config;
 
 use rocket::http::{Status, ContentType};
 use clap::Parser;
+use tera::{Context, Tera};
 
 use crate::repo::GitRepo;
 
@@ -39,14 +40,13 @@ fn web_repo(repo: &str) -> (Status, (ContentType, String)) {
     
     let repo = GitRepo::new(repo_path.as_str());
     
-    let mut body = String::from("");
+    let mut tera = Tera::default();
+    tera.add_raw_template("repo.html", include_str!("../templates/repo.html")).unwrap();
     
-    repo.unwrap().logs().for_each(|text| {
-        body.push_str(text.as_str());
-        body.push_str("<br/>");
-    });
+    let mut context = Context::new();
+    context.insert("commits", &repo.unwrap().logs());
     
-    (Status::Ok, (ContentType::HTML, body))
+    (Status::Ok, (ContentType::HTML, tera.render("repo.html", &context).unwrap()))
 }
 
 #[launch]

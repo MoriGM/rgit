@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html>
+<table>
+	<tr><th>Oid</th></tr>
+    {% for commit in commits %}
+	<tr><td>{{commit.oid}}</td></tr>
+	{% endfor %}
+</table>
+</html>
