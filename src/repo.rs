@@ -22,7 +22,7 @@ impl GitRepo {
         
         Ok(GitRepo{repo})
     }
-
+    
     pub fn refresh(&self) -> Result<GitRepo, String> {
         let repo = Repository::open(self.repo.path());
         
@@ -50,5 +50,5 @@ impl GitRepo {
         });
         
         commits
-    } 
+    }
 }

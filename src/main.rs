@@ -3,6 +3,7 @@ mod config;
 
 #[macro_use] extern crate rocket;
 
+use rocket::State;
 use rocket::http::{Status, ContentType};
 use clap::Parser;
 use tera::{Context, Tera};
@@ -17,12 +18,20 @@ struct Cli {
 
 
 #[get("/")]
-fn index() -> &'static str {
-    "Hello, world!"
+fn index(tera: &State<Tera>) -> (Status, (ContentType, String)) {
+    let repos = match config::repo::get_repos().repos {
+        Some(repos) => repos,
+        None => panic!("Missing no repo is registered in the rgit_repos.toml")
+    };
+    
+    let mut context = Context::new();
+    context.insert("repos", &repos);
+    
+    (Status::Ok, (ContentType::HTML, tera.render("main.html", &context).unwrap()))
 }
 
 #[get("/<repo>")]
-fn web_repo(repo: &str) -> (Status, (ContentType, String)) {
+fn web_repo(tera: &State<Tera>, repo: &str) -> (Status, (ContentType, String)) {
     let repos = match config::repo::get_repos().repos {
         Some(repos) => repos,
         None => panic!("Missing no repo is registered in the rgit_repos.toml")
@@ -40,9 +49,6 @@ fn web_repo(repo: &str) -> (Status, (ContentType, String)) {
     
     let repo = GitRepo::new(repo_path.as_str());
     
-    let mut tera = Tera::default();
-    tera.add_raw_template("repo.html", include_str!("../templates/repo.html")).unwrap();
-    
     let mut context = Context::new();
     context.insert("commits", &repo.unwrap().logs());
     
@@ -55,8 +61,13 @@ fn rocket() -> _ {
     
     let mut config = rocket::Config::default();
     config.port = cli.port.parse::<u16>().unwrap();
+    
+    let mut tera = Tera::default();
+    tera.add_raw_template("main.html", include_str!("../templates/main.html")).unwrap();
+    tera.add_raw_template("repo.html", include_str!("../templates/repo.html")).unwrap();
 
     rocket::build()
+        .manage(tera)
         .mount("/", routes![index])
         .mount("/repo", routes![web_repo])
 }
