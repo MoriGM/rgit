@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 description = "A small git web interface written in rust"
 license = "GPL-2.0"
-author = "MoriGM <mfkmorigaming@gmail.com>"
+authors = ["MoriGM <mfkmorigaming@gmail.com>"]
 repository = "https://github.com/MoriGM/rgit"
 keywords = ["git"]
 
