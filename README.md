@@ -43,7 +43,7 @@ cargo build --release
 
 ## Setup
 
-Create a file called `rgit_repos.toml` and register your git repos as following
+Create a file called `rgit_repos.toml` and register your git repos as following.
 
 ```Toml
 [[repos]]
@@ -52,3 +52,5 @@ path = "/home/git/repos/rgit"
 ```
 
 After that run the server in the same folder as the config file and watch all your registered projects on the webpage.
+
+You can add multiple but reusing the `[[repos]]` section.
