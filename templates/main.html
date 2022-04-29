@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 <html>
-<table>
-    <tr><th>Repos</th></tr>
-    {% for repo in repos %}
-    <tr><td><a href="/repo/{{repo.name}}">{{repo.name}}</a></td></tr>
-    {% endfor %}
-</table>
+<head>
+</head>
+<body>
+	<table>
+	    <tr><th>Repos</th></tr>
+	    {% for repo in repos %}
+	    <tr><td><a href="/repo/{{repo.name}}">{{repo.name}}</a></td></tr>
+	    {% endfor %}
+	</table>
+</body>
 </html>
