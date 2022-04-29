@@ -8,7 +8,8 @@ pub struct GitRepo {
 #[derive(Serialize, Deserialize)]
 pub struct GitCommit {
     pub oid :String,
-    pub message: String
+    pub message: String,
+    pub author: String
 }
 
 impl GitRepo {
@@ -49,12 +50,13 @@ impl GitRepo {
         revs.for_each(|rev| {
             let oid_raw = rev.unwrap();
             let oid = format!("{}", oid_raw);
-            let commit = self.repo.find_commit(oid_raw);
-            let message = match commit.unwrap().message() {
+            let commit = self.repo.find_commit(oid_raw).unwrap();
+            let message = match commit.message() {
                 Some(message) => message.to_string(),
                 None => "".to_string()
             };
-            commits.push(GitCommit{oid, message});
+            let author = commit.author().to_string();
+            commits.push(GitCommit{oid, message, author});
         });
         
         commits

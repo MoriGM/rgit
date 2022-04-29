@@ -4,11 +4,13 @@
 	<tr>
 		<th>Message</th>
         <th>Oid</th>
+        <th>Author</th>
 	</tr>
     {% for commit in commits %}
 	<tr>
 	   <td>{{commit.message}}</td>
 	   <td>{{commit.oid}}</td>
+	   <td>{{commit.author}}</td>
    </tr>
 	{% endfor %}
 </table>
