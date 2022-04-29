@@ -40,3 +40,15 @@ cargo build --release
 
 * [Eclipse](https://www.eclipse.org) - The IDE used
 * [Git](https://git-scm.com) - Used Versioning Programm
+
+## Setup
+
+Create a file called `rgit_repos.toml` and register your git repos as following
+
+```Toml
+[[repos]]
+name = "rgit"
+path = "/home/git/repos/rgit"
+```
+
+After that run the server in the same folder as the config file and watch all your registered projects on the webpage.
