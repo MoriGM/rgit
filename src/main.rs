@@ -30,6 +30,15 @@ fn index(tera: &State<Tera>) -> (Status, (ContentType, String)) {
     (Status::Ok, (ContentType::HTML, tera.render("main.html", &context).unwrap()))
 }
 
+#[get("/<path>/<file>")]
+fn web_static(_tera: &State<Tera>, path: &str, file: &str) -> (Status, (ContentType, &'static str)) {
+    if path == "css" && file == "main.css" {
+        return (Status::Ok, (ContentType::HTML, include_str!("../static/css/main.css")));
+    }
+    
+    (Status::NotFound, (ContentType::HTML, ""))
+}
+
 #[get("/<repo>")]
 fn web_repo(tera: &State<Tera>, repo: &str) -> (Status, (ContentType, String)) {
     let repos = match config::repo::get_repos().repos {
@@ -70,4 +79,5 @@ fn rocket() -> _ {
         .manage(tera)
         .mount("/", routes![index])
         .mount("/repo", routes![web_repo])
+        .mount("/static", routes![web_static])
 }
