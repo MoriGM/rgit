@@ -5,9 +5,15 @@
 </head>
 <body>
 	<table>
-	    <tr><th>Repos</th></tr>
+	    <tr>
+	       <th>Repos</th>
+	       <th>Last Update</th>
+	    </tr>
 	    {% for repo in repos %}
-	    <tr><td><a href="/repo/{{repo.name}}">{{repo.name}}</a></td></tr>
+	    <tr>
+	       <td><a href="/repo/{{repo.info.name}}">{{repo.info.name}}</a></td>
+	       <td>{{repo.last_update}}</td>
+	    </tr>
 	    {% endfor %}
 	</table>
 </body>

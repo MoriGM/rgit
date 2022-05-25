@@ -1,4 +1,4 @@
-mod repo;
+pub mod repo;
 mod config;
 
 #[macro_use] extern crate rocket;
@@ -19,13 +19,8 @@ struct Cli {
 
 #[get("/")]
 fn index(tera: &State<Tera>) -> (Status, (ContentType, String)) {
-    let repos = match config::repo::get_repos().repos {
-        Some(repos) => repos,
-        None => panic!("Missing no repo is registered in the rgit_repos.toml")
-    };
-    
     let mut context = Context::new();
-    context.insert("repos", &repos);
+    context.insert("repos", &config::repo::get_repos().repos);
     
     (Status::Ok, (ContentType::HTML, tera.render("main.html", &context).unwrap()))
 }
@@ -41,22 +36,17 @@ fn web_static(_tera: &State<Tera>, path: &str, file: &str) -> (Status, (ContentT
 
 #[get("/<repo>")]
 fn web_repo(tera: &State<Tera>, repo: &str) -> (Status, (ContentType, String)) {
-    let repos = match config::repo::get_repos().repos {
-        Some(repos) => repos,
-        None => panic!("Missing no repo is registered in the rgit_repos.toml")
-    };
+    let repos = config::repo::get_repos().repos;
     
     let repo = String::from(repo);
     
-    let repo_path = repos.iter().find(|config_repo| config_repo.name.as_ref().expect("[[repos]] in rgit_repos.toml is missing name") == &repo);
+    let repo_path = repos.iter().find(|config_repo| config_repo.info.name == repo);
     
     if repo_path.is_none() {
         return (Status::NotFound, (ContentType::HTML, String::new()));
     } 
     
-    let repo_path = repo_path.unwrap().path.as_ref().expect("[[repos]] in rgit_repos.toml is missing its path");
-    
-    let repo = GitRepo::new(repo_path.as_str());
+    let repo = GitRepo::new(repo_path.unwrap().info.path.as_str());
     
     let mut context = Context::new();
     context.insert("commits", &repo.unwrap().logs());

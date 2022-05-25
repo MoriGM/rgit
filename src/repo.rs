@@ -1,3 +1,5 @@
+use std::cmp;
+
 use git2::Repository;
 use serde::{Serialize, Deserialize};
 
@@ -60,5 +62,24 @@ impl GitRepo {
         });
         
         commits
+    }
+    
+    pub fn last_update(&self) -> i64 {
+        let mut revs = match self.repo.revwalk() {
+            Ok(rev) => rev,
+            Err(e) => panic!("failed to init: {}", e)
+        };
+        
+        revs.push_head().unwrap();
+        
+        let mut latest = 0;
+        
+        revs.for_each(|rev| {
+            let commit = self.repo.find_commit(rev.unwrap()).unwrap();
+
+            latest = cmp::max(latest, commit.time().seconds());
+        });
+        
+        latest
     }
 }
