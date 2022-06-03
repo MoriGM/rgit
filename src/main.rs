@@ -1,6 +1,7 @@
 pub mod repo;
 pub mod config;
 mod pages;
+mod tests;
 
 #[macro_use] extern crate rocket;
 
