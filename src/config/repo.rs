@@ -41,5 +41,5 @@ pub fn get_repos() -> ConfigRepos {
         repos.push(ConfigRepo{info: info.clone(), last_update: repo.unwrap().last_update()});
     });
     
-    return ConfigRepos{repos};
+    ConfigRepos{repos}
 }
