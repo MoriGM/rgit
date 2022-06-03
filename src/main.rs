@@ -18,14 +18,14 @@ struct Cli {
 fn rocket() -> _ {
     let cli = Cli::parse();
     
-    let mut config = rocket::Config::default();
-    config.port = cli.port.parse::<u16>().unwrap();
-    
     let mut tera = Tera::default();
     tera.add_raw_template("main.html", include_str!("../templates/main.html")).unwrap();
     tera.add_raw_template("repo.html", include_str!("../templates/repo.html")).unwrap();
+    
+    let config = rocket::Config::figment()
+    .merge(("port", cli.port.parse::<i16>().unwrap()));
 
-    rocket::build()
+    rocket::custom(config)
         .manage(tera)
         .mount("/", routes![pages::index])
         .mount("/repo", routes![pages::repo::index])
