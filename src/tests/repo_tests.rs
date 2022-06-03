@@ -18,3 +18,14 @@ fn test_repo_has_commits() {
     let commits = repo.logs();
     assert_eq!(commits.len() > 0, true);
 }
+
+#[test]
+fn test_repo_refresh() {
+    let repo = GitRepo::new("./");
+    
+    assert_eq!(repo.is_ok(), true);
+    
+    let repo = repo.unwrap().refresh();
+    
+    assert_eq!(repo.is_ok(), true);
+}
