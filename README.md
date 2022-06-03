@@ -9,7 +9,7 @@ A Rust Web Server to show your git projects
 
 ## Prerequisites
 
-* Rust 1.60.0 and up
+* Rust 1.61.0 and up
 * Cargo
 
 ## Authors
@@ -31,6 +31,7 @@ cargo build --release
 ### Tested Operating System
 
 * Linux Manjaro
+* Linux Ubuntu 20.04
 
 ### Tested Architecture
 
@@ -40,6 +41,7 @@ cargo build --release
 
 * [Eclipse](https://www.eclipse.org) - The IDE used
 * [Git](https://git-scm.com) - Used Versioning Programm
+* [Rust Lang](https://www.rust-lang.org) - Used Programming Language
 
 ## Setup
 
