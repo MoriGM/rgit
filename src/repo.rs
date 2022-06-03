@@ -50,6 +50,10 @@ impl GitRepo {
         let mut commits = Vec::new();
         
         revs.for_each(|rev| {
+            if rev.is_err() {
+                return;
+            }
+            
             let oid_raw = rev.unwrap();
             let oid = format!("{}", oid_raw);
             let commit = self.repo.find_commit(oid_raw).unwrap();
