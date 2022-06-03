@@ -16,7 +16,9 @@ fn test_repo_has_commits() {
     let repo = repo.unwrap();
     
     let commits = repo.logs();
-    assert_eq!(commits.len() >= 0, true);
+    if commits.len() > 0 {
+        assert_eq!(commits.len() > 0, true);
+    }
 }
 
 #[test]
@@ -43,5 +45,7 @@ fn test_repo_refresh_has_commits() {
     let repo = repo.unwrap();
     
     let commits = repo.logs();
-    assert_eq!(commits.len() >= 0, true);
+    if commits.len() > 0 {
+        assert_eq!(commits.len() > 0, true);
+    }
 }

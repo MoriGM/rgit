@@ -51,7 +51,6 @@ impl GitRepo {
         
         revs.for_each(|rev| {
             if rev.is_err() {
-                println!("{:#?}", rev.err());
                 return;
             }
             
