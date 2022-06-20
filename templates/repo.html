@@ -4,6 +4,12 @@
     <link rel="stylesheet" href="/statics/css/main.css">
 </head>
 <body>
+    <select>
+        {% for branch in branches %}
+        <option value="{{branch}}">{{branch}}</option>
+        {% endfor %}
+    </select>
+    <br/>
 	<table>
 		<tr>
 			<th>Message</th>

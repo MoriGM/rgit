@@ -117,4 +117,20 @@ impl GitRepo {
 
         latest
     }
+    
+    pub fn branches(&self) -> Vec<String> {
+        let mut vec = vec![];
+        
+        self.repo.branches(None).unwrap().for_each(|branch| {
+            let branch = branch.unwrap();
+            
+            if branch.1 != BranchType::Local {
+                return;
+            }
+            
+            vec.push(String::from(branch.0.name().unwrap().unwrap()));
+        });
+        
+        return vec;
+    }
 }

@@ -26,6 +26,7 @@ pub fn index(tera: &State<Tera>, repo: &str, branch: &str) -> (Status, (ContentT
 
     let mut context = Context::new();
     context.insert("commits", &repo.logs());
+    context.insert("branches", &repo.branches());
 
     (
         Status::Ok,
