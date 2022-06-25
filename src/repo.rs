@@ -131,6 +131,6 @@ impl GitRepo {
             vec.push(String::from(branch.0.name().unwrap().unwrap()));
         });
         
-        return vec;
+        vec
     }
 }
