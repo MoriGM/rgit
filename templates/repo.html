@@ -2,11 +2,12 @@
 <html>
 <head>
     <link rel="stylesheet" href="/statics/css/main.css">
+    <script src="/statics/js/repo.js"></script>
 </head>
 <body>
-    <select>
+    <select id="branchSelect">
         {% for branch in branches %}
-        <option value="{{branch}}">{{branch}}</option>
+        <option value="{{path}}{{branch}}" {% if branchName == branch %}selected{% endif %}>{{branch}}</option>
         {% endfor %}
     </select>
     <br/>

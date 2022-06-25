@@ -14,6 +14,16 @@ pub fn index<'a>(_tera: &State<Tera>, path: &str, file: &str) -> (Status, (Conte
             ),
         );
     }
+    
+    if path == "js" && file == "repo.js" {
+        return (
+            Status::Ok,
+            (
+                ContentType::JavaScript,
+                include_str!("../../../statics/js/repo.js"),
+            ),
+        );
+    }
 
     (Status::NotFound, (ContentType::HTML, ""))
 }
