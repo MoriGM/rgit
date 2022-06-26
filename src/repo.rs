@@ -1,5 +1,6 @@
 use std::cmp;
 
+use chrono::{DateTime, TimeZone, Local};
 use git2::{BranchType, Repository};
 use serde::{Deserialize, Serialize};
 
@@ -99,7 +100,7 @@ impl GitRepo {
         commits
     }
 
-    pub fn last_update(&self) -> i64 {
+    pub fn last_update(&self) -> String {
         let mut revs = match self.repo.revwalk() {
             Ok(rev) => rev,
             Err(e) => panic!("failed to init: {}", e),
@@ -114,8 +115,10 @@ impl GitRepo {
 
             latest = cmp::max(latest, commit.time().seconds());
         });
+        
+        let dt: DateTime<Local> = Local.timestamp(latest, 0);
 
-        latest
+         dt.format("%v %T").to_string()
     }
     
     pub fn branches(&self) -> Vec<String> {

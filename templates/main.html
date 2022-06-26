@@ -7,11 +7,13 @@
 	<table>
 	    <tr>
 	       <th>Repos</th>
+	       <th>Description</th>
 	       <th>Last Update</th>
 	    </tr>
 	    {% for repo in repos %}
 	    <tr>
 	       <td><a href="/repo/{{repo.info.name}}/master">{{repo.info.name}}</a></td>
+	       <td>{{repo.info.description}}</td>
 	       <td>{{repo.last_update}}</td>
 	    </tr>
 	    {% endfor %}
