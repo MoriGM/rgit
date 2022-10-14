@@ -1,3 +1,5 @@
+pub mod img;
+
 use rocket::http::{ContentType, Status};
 use rocket::State;
 

@@ -32,4 +32,6 @@ fn rocket() -> _ {
         .mount("/", routes![pages::index])
         .mount("/repo", routes![pages::repo::index])
         .mount("/statics", routes![pages::statics::index])
+        .mount("/", routes![pages::statics::img::favicon])
+
 }
