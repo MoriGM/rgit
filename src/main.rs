@@ -13,6 +13,12 @@ use tera::Tera;
 struct Cli {
     #[clap(short, default_value = "8000")]
     port: String,
+    #[clap(short, long)]
+    repos_config: Option<std::path::PathBuf>,
+}
+
+pub struct Config {
+    path: Option<std::path::PathBuf>,
 }
 
 #[launch]
@@ -29,6 +35,7 @@ fn rocket() -> _ {
 
     rocket::custom(config)
         .manage(tera)
+        .manage(Config{path: cli.repos_config})
         .mount("/", routes![pages::index])
         .mount("/repo", routes![pages::repo::index])
         .mount("/statics", routes![pages::statics::index])

@@ -9,9 +9,9 @@ use tera::{Context, Tera};
 use crate::config;
 
 #[get("/")]
-pub fn index(tera: &State<Tera>) -> (Status, (ContentType, String)) {
+pub fn index(repos_file: &State<crate::Config>, tera: &State<Tera>) -> (Status, (ContentType, String)) {
     let mut context = Context::new();
-    context.insert("repos", &config::repo::get_repos().repos);
+    context.insert("repos", &config::repo::get_repos(repos_file.path.as_deref()).repos);
 
     (
         Status::Ok,

@@ -7,8 +7,13 @@ use crate::config;
 use crate::repo::GitRepo;
 
 #[get("/<repo_name>/<branch>")]
-pub fn index(tera: &State<Tera>, repo_name: &str, branch: &str) -> (Status, (ContentType, String)) {
-    let repos = config::repo::get_repos().repos;
+pub fn index(
+    repo_file: &State<crate::Config>,
+    tera: &State<Tera>,
+    repo_name: &str,
+    branch: &str,
+) -> (Status, (ContentType, String)) {
+    let repos = config::repo::get_repos(repo_file.path.as_deref()).repos;
 
     let repo_path = repos
         .iter()
