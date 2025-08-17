@@ -6,29 +6,30 @@ use crate::repo::GitRepo;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ConfigRepos {
-    pub repos: Vec<ConfigRepo>
+    pub repos: Vec<ConfigRepo>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ConfigRepo {
     pub info: ConfigRepoInfo,
-    pub last_update: String
+    pub last_update: String,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct ConfigRepoInfo {
     pub name: String,
     pub path: String,
-    pub description: String
+    pub description: String,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct ConfigRepoInfos {
-    pub repos: Vec<ConfigRepoInfo>
+    pub repos: Vec<ConfigRepoInfo>,
 }
 
-pub fn get_repos() -> ConfigRepos {
-    let content = match fs::read_to_string("rgit_repos.toml") {
+pub fn get_repos(path: Option<&std::path::Path>) -> ConfigRepos {
+    let content = match fs::read_to_string(path.unwrap_or(std::path::Path::new("rgit_repos.toml")))
+    {
         Ok(content) => content,
         Err(_) => panic!("File is missing!"),
     };
