@@ -116,7 +116,7 @@ impl GitRepo {
             latest = cmp::max(latest, commit.time().seconds());
         });
         
-        let dt: DateTime<Local> = Local.timestamp(latest, 0);
+        let dt: DateTime<Local> = Local.timestamp_opt(latest, 0).unwrap();
 
          dt.format("%v %T").to_string()
     }

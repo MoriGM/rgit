@@ -31,7 +31,7 @@ cargo build --release
 ### Tested Operating System
 
 * Linux Manjaro
-* Linux Ubuntu 20.04
+* Linux Ubuntu 24.04
 
 ### Tested Architecture
 
